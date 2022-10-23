@@ -11,6 +11,11 @@
 // Let's start with 1
 //We can get it to randomly select one of the three options by writing a function that returns a random number between one and three and assigning an option to each number
 //To do this, we'll use the math methods for getting random numbers and then an if else if 
+
+//These variables have been initialised to keep track of wins an losses
+let playerWinCounter = 0;
+let computerWinCounter = 0;
+
 function getComputerChoice() {
     let computerChoice = Math.floor((Math.random() * 3) + 1);
     if (computerChoice === 1) {
@@ -37,21 +42,46 @@ function gameRound() {
 
     //We'll use if else if conditionals to declare the winner
     if (computerSelection === playerSelection) {
-        return "It's a tie!";
+        console.log("It's a tie!");
     } else if (computerSelection === "rock" && playerSelection === "paper") {
-        return "You win! Paper covers rock";
+        console.log("You win! Paper covers rock");
+        return playerWinCounter++;
     } else if (playerSelection === "rock" && computerSelection
      === "paper") {
-        return "You lose! Paper covers rock";
+        console.log("You lose! Paper covers rock");
+        return computerWinCounter++;
      } else if (computerSelection === "scissors" && playerSelection === "paper") {
-        return "You lose! Scissors cuts paper";
+        console.log("You lose! Scissors cuts paper");
+        return computerWinCounter++;
      } else if (playerSelection === "scissors" && computerSelection === "paper") {
-        return "You win! Scissors cuts paper";
+        console.log("You win! Scissors cuts paper");
+        return playerWinCounter++;
     } else if (playerSelection === "rock" && computerSelection === "scissors") {
-        return "You win! Rock crushes scissors";
+        console.log("You win! Rock crushes scissors");
+        return playerWinCounter++;
      } else if (computerSelection === "rock" && playerSelection === "scissors") {
-        return "You lose! Rock crushes scissors";
+        console.log("You lose! Rock crushes scissors");
+        return computerWinCounter++;
      } else {
         console.log("Something's not right here...");
      }
 }
+
+//Now to 3. We'll initialise a variable (i) to keep track of the number of gameRounds played. We'll also make some changes to the gameRound function so that the messages are console.logged out and instead what is returned is a count based on who won. Variables will have to be initialised in the gameRound function for that as well.
+
+function game() {
+    for (let i = 0; i < 5; i++) {
+        gameRound();
+    }
+
+    if (computerWinCounter === playerWinCounter) {
+        console.log("It's a draw.");
+    } else if (computerWinCounter > playerWinCounter) {
+        console.log("You lose!");
+    } else if (playerWinCounter > computerWinCounter) {
+        console.log("You win!");
+    }
+}
+
+//This is to run the game
+game();
