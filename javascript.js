@@ -24,3 +24,34 @@ function getComputerChoice() {
     }
 }
 
+//Now on to 2. The computerSelection will be assigned the value of running the getComputerChoice function and the playerSelection will be a prompt asking for input from the player. 
+
+function gameRound() {
+    let computerSelection = getComputerChoice();
+    //This is to see what the computer's choice is and may be taken out later
+    console.log(computerSelection);
+    let playerSelection = prompt("Rock, Paper, or Scissors?");
+    //.toLowerCase() is to get variables to be case insensitive
+    playerSelection = playerSelection.toLowerCase();
+    computerSelection = computerSelection.toLowerCase();
+
+    //We'll use if else if conditionals to declare the winner
+    if (computerSelection === playerSelection) {
+        return "It's a tie!";
+    } else if (computerSelection === "rock" && playerSelection === "paper") {
+        return "You win! Paper covers rock";
+    } else if (playerSelection === "rock" && computerSelection
+     === "paper") {
+        return "You lose! Paper covers rock";
+     } else if (computerSelection === "scissors" && playerSelection === "paper") {
+        return "You lose! Scissors cuts paper";
+     } else if (playerSelection === "scissors" && computerSelection === "paper") {
+        return "You win! Scissors cuts paper";
+    } else if (playerSelection === "rock" && computerSelection === "scissors") {
+        return "You win! Rock crushes scissors";
+     } else if (computerSelection === "rock" && playerSelection === "scissors") {
+        return "You lose! Rock crushes scissors";
+     } else {
+        console.log("Something's not right here...");
+     }
+}
