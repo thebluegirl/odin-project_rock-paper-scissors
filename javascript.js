@@ -1,20 +1,49 @@
 /* 
-1. Create a function called getComputerChoice that will randomly return either ‘Rock’, ‘Paper’ or ‘Scissors’
+    1. Adjust the logic that plays 5 rounds to play until a player reaches 5 points'
+        a. This means there can't be a tie
 
-2. Write a function that plays a single round of Rock Paper Scissors. The function should take two parameters - the playerSelection and computerSelection - and then return a string that declares the winner of the round like so: "You Lose! Paper beats Rock"
-    Make your function’s playerSelection parameter case-insensitive (so users   can input rock, ROCK, RocK or any other variation).
+    2. Create buttons that will serve as user input instead of using a prompt
+        a. 3 buttons, one for each option
+        b. Each button will have to trigger an event to play a round
 
-3. Write a NEW function called game(). Call the playRound function inside of this one to play a 5 round game that keeps score and reports a winner or loser at the end.
+    3. Create a div that will declare the winner for each round and at the end of the game
 
- */
 
-// Let's start with 1
-//We can get it to randomly select one of the three options by writing a function that returns a random number between one and three and assigning an option to each number
-//To do this, we'll use the math methods for getting random numbers and then an if else if 
+*/
 
-//These variables have been initialised to keep track of wins an losses
+//These variables have been initialized to keep track of wins an losses
 let playerWinCounter = 0;
 let computerWinCounter = 0;
+let playerSelection = "";
+
+// To accomplish 2, we'll create buttons in the HTML and take control of them here
+const playerSelectionRock = document.getElementById('player-selection-rock');
+const playerSelectionPaper = document.getElementById('player-selection-paper');
+const playerSelectionScissors = document.getElementById('player-selection-scissors');
+
+//Here, we'll create a div to declare the winner and put it in the DOM. We'll also adjust the winner function to put this in the DOM
+const resultDiv = document.createElement('div');
+resultDiv.setAttribute('id', 'result-div');
+playerSelectionScissors.after(resultDiv);
+
+//Let's create a boolean function to check if there is a winner. This way we can end the game and disable the player choice buttons when there's a winner.
+function winner() {
+    if (playerWinCounter === 5 && playerWinCounter > computerWinCounter){
+        resultDiv.innerHTML += `<p>You win!</p>` ;
+        return true;
+    } else if (computerWinCounter === 5 && computerWinCounter > playerWinCounter) {
+        resultDiv.innerHTML += `<p>You lose!</p>` ;
+        return true;
+    } else return false
+}
+
+function winnerCheck() {
+    if (winner() === true){
+        playerSelectionRock.disabled = true;
+        playerSelectionPaper.disabled = true;
+        playerSelectionScissors.disabled = true;
+    }
+}
 
 function getComputerChoice() {
     let computerChoice = Math.floor((Math.random() * 3) + 1);
@@ -29,59 +58,58 @@ function getComputerChoice() {
     }
 }
 
-//Now on to 2. The computerSelection will be assigned the value of running the getComputerChoice function and the playerSelection will be a prompt asking for input from the player. 
 
 function gameRound() {
     let computerSelection = getComputerChoice();
     //This is to see what the computer's choice is and may be taken out later
     console.log(computerSelection);
-    let playerSelection = prompt("Rock, Paper, or Scissors?");
     //.toLowerCase() is to get variables to be case insensitive
     playerSelection = playerSelection.toLowerCase();
     computerSelection = computerSelection.toLowerCase();
 
     //We'll use if else if conditionals to declare the winner
     if (computerSelection === playerSelection) {
-        console.log("It's a tie!");
+        resultDiv.innerHTML += `<p>This round is tied</p>`;
     } else if (computerSelection === "rock" && playerSelection === "paper") {
-        console.log("You win! Paper covers rock");
+        resultDiv.innerHTML += `<p>Paper covers rock, you win this round!</p>`;
         return playerWinCounter++;
     } else if (playerSelection === "rock" && computerSelection
      === "paper") {
-        console.log("You lose! Paper covers rock");
+        resultDiv.innerHTML += `<p>Paper covers rock, you lose this round!</p>`;
         return computerWinCounter++;
      } else if (computerSelection === "scissors" && playerSelection === "paper") {
-        console.log("You lose! Scissors cuts paper");
+        resultDiv.innerHTML += `<p>Scissors cuts paper, you lose this round.</p>`;
         return computerWinCounter++;
      } else if (playerSelection === "scissors" && computerSelection === "paper") {
-        console.log("You win! Scissors cuts paper");
+        resultDiv.innerHTML += `<p>Scissors cuts paper, you win this round!</p>`;
         return playerWinCounter++;
     } else if (playerSelection === "rock" && computerSelection === "scissors") {
-        console.log("You win! Rock crushes scissors");
+        resultDiv.innerHTML += `<p>Rock crushes scissors, you win this round!</p>`;
         return playerWinCounter++;
      } else if (computerSelection === "rock" && playerSelection === "scissors") {
-        console.log("You lose! Rock crushes scissors");
+        resultDiv.innerHTML += `<p>Rock crushes scissors, you lose this round.</p>`;
         return computerWinCounter++;
      } else {
-        console.log("Something's not right here...");
-     }
-}
-
-//Now to 3. We'll initialise a variable (i) to keep track of the number of gameRounds played. We'll also make some changes to the gameRound function so that the messages are console.logged out and instead what is returned is a count based on who won. Variables will have to be initialised in the gameRound function for that as well.
-
-function game() {
-    for (let i = 0; i < 5; i++) {
-        gameRound();
-    }
-
-    if (computerWinCounter === playerWinCounter) {
-        console.log("It's a draw.");
-    } else if (computerWinCounter > playerWinCounter) {
-        console.log("You lose!");
-    } else if (playerWinCounter > computerWinCounter) {
-        console.log("You win!");
+        resultDiv.innerHTML = `<p>Something's not right here...</p>`;
     }
 }
 
-//This is to run the game
-game();
+//Attaching functions to the buttons
+playerSelectionRock.addEventListener('click', function(e) {
+    playerSelection = "Rock";
+    gameRound();
+    winnerCheck();
+})
+
+playerSelectionPaper.addEventListener('click', function(e) {
+    playerSelection = "Paper";
+    gameRound();
+    winnerCheck();
+})
+
+playerSelectionScissors.addEventListener('click', function(e) {
+    playerSelection = "Scissors";
+    gameRound();
+    winnerCheck();
+})
+
